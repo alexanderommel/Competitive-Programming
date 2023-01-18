@@ -11,56 +11,40 @@
 using namespace std;
 
 vector<pair<int,int>> M;
-int lowest=0;
 
 int main(){
+
     ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
     string s;
     cin >> s;
 
     int n = s.size();
 
-    int ans = INT_MAX;
-
-    int lp=-1,rp=-1;
-
+    int L[n];
+    int U[n];
     fr(0,n,i){
+        L[i]=0;
+        U[i]=0;
+    }
+    int lowers=0;
+    fr(0,n,i){
+        L[i]=lowers;
         if (s[i]>='a'){
-            lp=i;
-            break;
+            lowers++;
         }
     }
-
+    int highers=0;
     fri(n-1,0,i){
+        U[i]=highers;
         if (s[i]<'a'){
-            rp=i;
-            break;
+            highers++;
         }
     }
-
-    if (lp==-1 || rp==-1){
-        cout << 0 << '\n';
-        return 0;
+    int ans = INT_MAX;
+    fr(0,n,i){
+        ans = min(ans,L[i]+U[i]);
     }
-
-    int u=0,l=0;
-
-    cout << "GO" <<'\n';
-
-    fr(lp,rp+1,i){
-        if (s[i]<'a'){
-            cout << s[i] << " ";
-            u++;
-        }else{
-            l++;
-        }
-    }
-
-
-
-    cout << "GO" <<'\n';
-
-    cout << min(u,l) << '\n';
-    return 0;
+    cout << ans << '\n';
 
 }
+
