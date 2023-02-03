@@ -10,6 +10,7 @@
 #define vllin(vec,n) fr(0,n,i){ll x; cin>>x; vec.pb(x);}
 
 using namespace std;
+typedef map<ll,ll, greater<ll>> desc_map; // mapa que al iterar empezamos desde el key mas grande
 typedef std::pair<ll,ll> mypair; // equivale a pair<long long int, long long int>
 typedef std::priority_queue<ll> maxqueue; // cola de prioridad (el mas grande arriba)
 typedef std::priority_queue <ll, vector<ll>, greater<ll>> minqueue; // cola de prioridad menor (el menor arriba)
@@ -51,7 +52,9 @@ bool comparador_ascendente_pair_string ( const pair<string,int>& l, const pair<s
 
 /** MAPAS **/
 
-// funcion para ordenar un map de menor a mayor
+// Al iterar un map por defecto la iteración se realiza en orden ascendente con respecto a las keys del map
+
+// funcion para ordenar un map de menor a mayor segun los values del map
 // lo que hace es recibir un mapa, copiarlo en un vector de pairs y ordenar segun el valor 'value' del map
 vector<mypair> ordenar_map(map<ll,ll> mapa){
     vector<mypair> a;
