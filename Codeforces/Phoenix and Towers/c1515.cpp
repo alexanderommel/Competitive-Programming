@@ -23,85 +23,34 @@ int main(){
     while(t--){
         int n,m,x;
         cin >> n >> m >> x;
-        vector<pair<int,int>> h(n);
-        fr(0,n,i){
-            int num;
-            cin >> num;
-            h[i]={num,i};
-        }
-
-        std::sort(h.begin(), h.end(), my_comparator);
-        //std::reverse(h.begin(), h.end());
-
-//        cout << "reordered: " << '\n';
-//        fr(0,n,i){
-//            cout << "first: " << h[i].first << " index: " <<  h[i].second <<'\n';
-//        }
-
-        int tw[m];
-        fr(0,m,i){
-            tw[i]=0;
-        }
-
+        priority_queue<pair<ll,int>> maxq;
+        priority_queue <pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>> minq;
         int ans[n];
-
-        int p=0;
-        int p2=0,p3,p4;
-        while(p<n){
-            if(p2==m){
-                p2=0;
-            }
-            if (p2==-1){
-                p2 = m-1;
-            }
-            p3=p2+1;
-            if (p3==m){
-                p3=0;
-            }
-            p4=p2-1;
-            if (p4==-1){
-                p4=m-1;
-            }
-            if (tw[p2]<=tw[p3] && tw[p2]<=tw[p4]){
-                tw[p2]+=h[p].first;
-                ans[h[p].second]=p2;
-                p++;
-            }else{
-                if (tw[p3]>=tw[p4]){
-                    p2--;
-                }else{
-                    p2++;
-                }
-            }
+        fr(0,n,i){
+            ll nm;
+            cin >> nm;
+            maxq.push({nm,i});
         }
-
-        int minimum = INT_MAX;
-
-        fr(0,m,j){
-            if (tw[j]<=minimum){
-                minimum = tw[j];
-            }
+        fr(0,m,i){
+            pair<ll,int> tp = maxq.top();
+            minq.push({tp.first,i});
+            maxq.pop();
+            ans[tp.second]=i;
         }
-
-        bool ok=true;
-        fr(0,m,j){
-            if (tw[j]>minimum+x){
-                ok= false;
-                break;
-            }
+        while(!maxq.empty()){
+            pair<ll,int> tpmin = minq.top();
+            pair<ll,int> tpmax = maxq.top();
+            maxq.pop();
+            minq.pop();
+            ll newsz = tpmin.first + tpmax.first;
+            ans[tpmax.second]=tpmin.second;
+            minq.push({newsz,tpmin.second});
         }
-
-        if (ok){
-            cout << "YES" << '\n';
-            fr(0,n,z){
-                cout << ans[z] + 1<< " ";
-            }
-            cout << '\n';
-        }else{
-            cout << "NO" << '\n';
+        cout << "YES\n";
+        fr(0,n,i){
+            cout << ans[i] + 1 << " ";
         }
-
-
+        cout << '\n';
     }
 
     return 0;
