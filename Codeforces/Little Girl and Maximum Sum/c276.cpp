@@ -18,6 +18,7 @@ void update(ll *BIT,ll index, ll value, int n){
     }
 }
 
+
 ll sum(ll *BIT, ll index){
     if (index<=0){
         return 0;
