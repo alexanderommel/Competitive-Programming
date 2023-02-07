@@ -8,6 +8,7 @@
 #define len(arr) arr.size()
 #define viin(vec,n) fr(0,n,i){int x; cin>>x; vec.pb(x);}
 #define vllin(vec,n) fr(0,n,i){ll x; cin>>x; vec.pb(x);}
+#define LSB(i)  ((i) & -(i))
 using namespace std;
 
 /**
@@ -19,7 +20,9 @@ void update(int *BIT,int index, int value, int n){
     int k = index;
     while(k<=n){
         BIT[k]+=value;
-        k += k&-k;
+        // obtenemos el bit menos significativo y lo aumentamos
+        // al aumentar nos desplazamos en el rango de importancia
+        k += k&-k; //actualizamos el rango de importancia de el número
     }
 }
 
@@ -28,7 +31,7 @@ int sum(int *BIT, int index){
     int ans = 0;
     while(k>0){
         ans+=BIT[k];
-        k -= k&-k;
+        k -= k&-k; // quitamos el lsb y retrocedemos en el rango de importancia
     }
     return ans;
 }
