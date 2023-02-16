@@ -232,6 +232,26 @@ int main(){
 
 }
 
+int mainX(){
+
+    int N,Q;
+    cin >> N >> Q;
+    int pesos[N];
+    for(int i=0; i<N; i++){
+        cin >> pesos[i];
+    }
+    while(Q--){
+
+        int peso_maximo;
+        cin >> peso_maximo;
+        int respuesta=0;
+
+        /** AQUÍ AGREGAR LA SOLUCIÓN PARA ESTA PREGUNTA **/
+
+        cout << respuesta <<'\n';
+    }
+}
+
 int main233111(){
     int n,q;
     cin >> n >> q;
