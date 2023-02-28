@@ -1,0 +1,7 @@
+
+Desde 1 hasta 1e16, solo existen a lo mucho una descomposición prima de 50 números secuenciales 2,3,4,...
+
+En el rango desde 1 hasta 1e5, el número con más factores tiene 128 factores, desde 1 hasta 1e6 solo hay 240 factores
+Para hallar todos los multiplos de los numeros a,b,c (al mismo tiempo) ,podemos hacer n/mcm(a,b,c)-n/mcm(a,b,c,c+1)
+
+el rango de los numeros en la descomposicion prima de n, siempre estan en el rango desde 2 hasta raiz de n
