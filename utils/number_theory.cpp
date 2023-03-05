@@ -1,19 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long int
 
-int gcd(int a, int b){
+ll gcd(ll a, ll b){
     if(b==0)
         return a;
     return gcd(b,a%b);
 }
 
-int lcm(int a, int b){
+ll lcm(ll a, ll b){
     return (a*b)/(gcd(a,b));
 }
 
-int sieve_of_eratosthenes(){
+ll sieve_of_eratosthenes(){
     int n=100;
-    int sieve[n+1];
+    ll sieve[n+1];
     for(int i=0;i<n;++i){
         sieve[i]=0;
     }
