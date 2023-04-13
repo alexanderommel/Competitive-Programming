@@ -8,12 +8,13 @@
 #define len(arr) arr.size()
 #define viin(vec,n) fr(0,n,i){int x; cin>>x; vec.pb(x);}
 #define vllin(vec,n) fr(0,n,i){ll x; cin>>x; vec.pb(x);}
+#define LSB(i)  ((i) & -(i))
 
 using namespace std;
-typedef map<ll,ll, greater<ll>> desc_map; // mapa que al iterar empezamos desde el key mas grande
-typedef std::pair<ll,ll> mypair; // equivale a pair<long long int, long long int>
-typedef std::priority_queue<ll> maxqueue; // cola de prioridad (el mas grande arriba)
-typedef std::priority_queue <ll, vector<ll>, greater<ll>> minqueue; // cola de prioridad menor (el menor arriba)
+typedef map<ll,ll, greater<ll>> desc_map;
+typedef std::pair<ll,ll> mypair;
+typedef std::priority_queue<ll> maxqueue;
+typedef std::priority_queue <ll, vector<ll>, greater<ll>> minqueue;
 
 /**
  * UTILIDADES
@@ -89,24 +90,63 @@ int lcm(int a, int b){return (a*b)/(gcd(a,b));}
  */
 
 int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        ll ans=0;
+        priority_queue <ll, vector<ll>, greater<ll>> pq;
+        fr(0,n,i){
+            ll nm;
+            cin >> nm;
+            if(i==0){
+                ans= nm;
+            }else{
+                pq.push(nm);
+            }
+        }
+        while(!pq.empty()){
+            ll lw = pq.top();
+            if(lw>ans){
+                ll add =  (lw-ans+1)/2;
+                ans+=add;
+            }
+            pq.pop();
+        }
+        cout << ans << '\n';
+    }
+}
+
+int main3(){
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        map<int,int> m;
+        fr(0,2*n,i){
+            int nm;
+            cin >> nm;
+            if(i<n){
+                m[nm]++;
+            }else{
+                m[nm]--;
+            }
+        }
+        int ans=0;
+        for(auto e: m){
+            if(e.first!=1){
+                ans+=abs(e.second);
+            }
+        }
+        cout << ans << '\n';
+    }
+}
+
+int main2(){
 
     ios::sync_with_stdio(false); cin.tie(0); cout.tie(0); // no prestar atención, solo es para optimización de tiempos
-
-    vector<mypair> a;
-    vector<pair<long long int, long long int>> b; // es lo mismo de arriba
-    a.pb({0,1});
-    a.push_back({2,1});
-    a.pb({12,1});
-    a.pb({4,1});
-    a.pb({3,1});
-    a.pb({133,1});
-    a.pb({1,1});
-
-    std::sort(a.begin(), a.end(), comparador_ascendente_pair);
-
-    fr(0,a.size(),i){
-        cout << a[i].first << " ";
-    }
 
     return 0;
 }
