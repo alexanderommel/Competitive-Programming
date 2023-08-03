@@ -1,124 +1,79 @@
 #include <bits/stdc++.h>
-#define pb push_back
-#define vi vector<int>
 #define ll long long
-#define vll vector<long long>
-#define fr(s,n,i) for (long long i=s; i<n; ++i)
-#define fri(s,e,i) for (long long i=s; i>=e; --i)
-#define len(arr) arr.size()
-#define viin(vec,n) fr(0,n,i){int x; cin>>x; vec.pb(x);}
-#define vllin(vec,n) fr(0,n,i){ll x; cin>>x; vec.pb(x);}
 using namespace std;
 
-typedef std::pair<ll,ll> mypair;
-bool my_comparator ( const mypair& l, const mypair& r){
-    return l.second > r.second;
-}
+const int N = 3 + (1e6);
+ll pre[N];
 
 int main(){
-    ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-
     int t;
     cin >> t;
     while(t--){
-        int n; string s;
-        cin >> n; cin >> s;
-
-        vector<pair<int,int>> f(26);
-        fr(0,26,i){
-            f[i]={i,0};
+        int n;
+        cin >> n;
+        string s;
+        cin >> s;
+        map<int,int> f;
+        vector<pair<int,int>> h(26);
+        bool mask[26];
+        int ans=n+1;
+        int limit;
+        for (int i = 0; i < 26; ++i) {
+            f[i]=0;
+            h[i]={0,i};
         }
-        fr(0,n,i){
-            f[s[i]-'a'].second++;
+        for (int i = 0; i < n; ++i) {
+            f[s[i]-'a']++;
+            h[s[i]-'a'].first++;
         }
-
-        std::sort(f.begin(), f.end(),my_comparator);
-
-
-        //fr(0,26,i){
-         //   char lt = f[i].first+'a';
-         //   cout << "letra "<<lt<<" con frecuencia: "<<f[i].second << '\n';
-        //}
-
-
-        int ans=INT_MAX;
-        string resFinal=s;
-
-        fr(1,27,i){
-            int len = n/i;
-            if (len*i==n){
-
-                string respuesta="";
-                int localAns=0;
-                int constr[26];
-                fr(0,26,cc){
-                    constr[cc] = -1;
+        std::sort(h.begin(), h.end());
+        std::reverse(h.begin(), h.end());
+        for (int i = 1; i <=26 ; ++i) {
+            if (n%i==0){
+                int c=0;
+                int loc=0;
+                bool my_mask[26];
+                for (int j = 0; j < 26; ++j) {
+                    my_mask[j]=false;
                 }
-                fr(0,i,m){
-                    constr[f[m].first]=f[m].second;
+                for(auto p: h){
+                    if (c==i) break;
+                    my_mask[p.second]=true;
+                    if (p.first< (n/i)) loc+= (n/i) - p.first;
+                    c++;
                 }
-
-                int lp=0;
-
-                //cout << "Testing size " << len << '\n';
-                //fr(0,26,xxxx){
-                 //   char letra = xxxx+'a';
-                 //   cout << "("<<letra<<","<<constr[xxxx]<<") ";
-                //}
-                //cout << '\n';
-
-                fr(0,n,j) {
-
-                    if (constr[s[j] - 'a'] <0 || constr[s[j] - 'a'] > len) {
-                        localAns++;
-
-                        while(lp<26){
-                            if (constr[lp]>=0 && constr[lp] < len){
-                                constr[lp]++;
-                                constr[s[j] - 'a']--;
-                                char letraN = lp + 'a';
-                                respuesta = respuesta + letraN;
-                                break;
-                            }
-                            lp++;
-                        }
-
-
-
-                        //fr(0, 26, m) {
-                          //  if (constr[m] >=0 && constr[m] < len) {
-                            //    constr[m]++;
-                              //  constr[s[j] - 'a']--;
-                                //char letraN = m + 'a';
-                                //respuesta = respuesta + letraN;
-                                //break;
-                            //}
-                        //}
-
-
-
-                    } else {
-                        char letraN = s[j];
-                        respuesta = respuesta + letraN;
+                if (loc<ans){
+                    ans=loc;
+                    limit = n/i;
+                    for (int j = 0; j < 26; ++j) {
+                        mask[j]=my_mask[j];
                     }
                 }
-
-                //cout << "ans for this length is: " << localAns << '\n';
-                //cout << "string for this length is: " << respuesta << '\n';
-
-                if (localAns<ans){
-                    ans = localAns;
-                    resFinal = respuesta;
-                }
-
             }
         }
-
+        vector<int> g;
+        for (int i = 0; i < 26; ++i) {
+            if (mask[i] && f[i]<limit){
+                g.push_back(i);
+            }
+        }
+        int p=0;
+        int i=0;
+        int k=ans;
+        while(k>0){
+            if (f[g[p]]==limit) p++;
+            if (f[s[i]-'a']<=limit && mask[s[i]-'a']){
+                i++;
+                continue;
+            }else{
+                f[s[i]-'a']--;
+                s[i]=char(g[p]+'a');
+                f[s[i]-'a']++;
+                k--;
+            }
+            i++;
+        }
         cout << ans <<'\n';
-        cout << resFinal << '\n';
-
+        cout << s <<'\n';
     }
-
-    return 0;
 }
-
