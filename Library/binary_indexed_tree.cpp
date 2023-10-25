@@ -1,49 +1,54 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+
 using namespace std;
+typedef long long ll;
 
-#define ll long long
+const int maxN = 2e5;
 
-struct FenwickTree {
-    vector<int> bit;  // binary indexed tree
-    int n;
+int N, Q;
+ll A[maxN+1], BIT[maxN+1];
 
-    FenwickTree(int n) {
-        this->n = n;
-        bit.assign(n, 0);
-    }
+void update(int idx, ll new_val){
+    ll diff = new_val - A[idx];
+    for(int i = idx; i <= N; i += -i&i)
+        BIT[i] += diff;
+    A[idx] = new_val;
+}
 
-    FenwickTree(vector<int> const &a) : FenwickTree(a.size()) {
-        for (size_t i = 0; i < a.size(); i++)
-            add(i, a[i]);
-    }
+void range_update(int R, int L, ll new_val){
+    update(R+1,-new_val);
+    update(L,new_val);
+}
 
-    int sum(int r) {
-        int ret = 0;
-        for (; r >= 0; r = (r & (r + 1)) - 1)
-            ret += bit[r];
-        return ret;
-    }
+ll query(int idx){
+    ll sum = 0;
+    for(int i = idx; i > 0; i -= -i&i)
+        sum += BIT[i];
+    return sum;
+}
 
-    // inclusive interval
-    int sum(int l, int r) {
-        return sum(r) - sum(l - 1);
-    }
-
-    void add(int idx, int delta) {
-        for (; idx < n; idx = idx | (idx + 1))
-            bit[idx] += delta;
-    }
-};
+ll range_query(int R, int L){
+    return query(R)- query(L-1);
+}
 
 int main(){
-    int N = 100;
-    FenwickTree bit = FenwickTree(N);
-    vector<int> a(N);
-    for (int i = 0; i < N; ++i) a[i]=i+1, bit.add(i,a[i]);
-    cout << "-------------------- Queries ----------------------\n";
-    int Q; cin >> Q;
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> N >> Q;
+    for (int i = 1; i <= N; ++i) {
+        cin >> A[0];
+        update(i,A[0]);
+    }
     while(Q--){
-        int l,r; cin >> l >> r;
-        cout << bit.sum(l,r) <<'\n';
+        int type; cin >> type;
+        if (type==1){
+            int ix; cin >> ix;
+            ll new_value; cin >> new_value;
+            update(ix,new_value);
+        }else{
+            int left,right; cin >> left >> right;
+            cout << range_query(right,left)<<'\n';
+        }
     }
 }
